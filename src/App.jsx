@@ -22,7 +22,7 @@ function App() {
   }, [location.pathname])
 
   if (!isAuthenticated && location.pathname !== '/login') {
-    return <Navigate to="/login" />
+    return <Navigate to="/login" replace />
   }
 
   return (
