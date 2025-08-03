@@ -1,70 +1,60 @@
-// src/pages/LoginPage.jsx
-
-import React, { useState } from 'react';
-import axios from 'axios';
-import './LoginPage.css';
+import React, { useState } from "react";
+import axios from "axios";
+import "./LoginPage.css";
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
 
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/login/superadmin`,
-        formData
+        {
+          email,
+          password,
+        }
       );
 
-      const { token } = response.data;
-      localStorage.setItem('token', token);
-      window.location.href = '/dashboard';
+      if (response.data && response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        window.location.href = "/dashboard";
+      } else {
+        setError("Erreur de connexion. Veuillez réessayer.");
+      }
     } catch (err) {
       console.error(err);
-      setError('Erreur de connexion. Veuillez réessayer.');
-    } finally {
-      setLoading(false);
+      setError("Erreur de connexion. Veuillez réessayer.");
     }
   };
 
   return (
     <div className="login-container">
-      <h2>Connexion SuperAdmin</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="login-form" onSubmit={handleLogin}>
+        <h2>Connexion SuperAdmin</h2>
+
+        {error && <p className="error-message">{error}</p>}
+
         <input
           type="email"
-          name="email"
           placeholder="Adresse email"
-          value={formData.email}
-          onChange={handleChange}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
+
         <input
           type="password"
-          name="password"
           placeholder="Mot de passe"
-          value={formData.password}
-          onChange={handleChange}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit" disabled={loading}>
-          {loading ? 'Connexion...' : 'Se connecter'}
-        </button>
-        {error && <p className="error-message">{error}</p>}
+
+        <button type="submit">Se connecter</button>
       </form>
     </div>
   );
