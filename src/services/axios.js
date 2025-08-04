@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://api.voyagemax.net/api',
+  baseURL: `${import.meta.env.VITE_API_URL}/api`,
 });
 
 // Ajoute automatiquement le token aux requêtes

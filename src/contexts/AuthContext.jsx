@@ -25,8 +25,11 @@ export const AuthProvider = ({ children }) => {
           });
           setUser(response.data);
         } catch (err) {
-          console.error('Token invalide ou expiré');
-          logout();
+          console.error('Token invalide ou expiré:', err.message);
+          // Ne pas faire logout automatiquement si c'est juste un problème de réseau
+          if (err.response?.status === 401) {
+            logout();
+          }
         }
       }
       setLoading(false);
