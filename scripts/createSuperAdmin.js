@@ -1,30 +1,33 @@
 const bcrypt = require('bcrypt');
-const { SuperAdmin } = require('../models'); // adapte le chemin si nécessaire
-const { v4: uuidv4 } = require('uuid');
+const { SuperAdmin } = require('../models'); // adapte si le modèle est ailleurs
+const { sequelize } = require('../models');  // adapte si nécessaire
 
-async function createSuperAdmin() {
-  const email = 'admin@voyagemax.net';
-  const plainPin = '123456';
-  const hashedPin = await bcrypt.hash(plainPin, 10);
-
+const run = async () => {
   try {
-    const existing = await SuperAdmin.findOne({ where: { email } });
-    if (existing) {
-      console.log('❌ SuperAdmin already exists.');
-      return;
-    }
+    await sequelize.authenticate();
+    await sequelize.sync();
 
-    await SuperAdmin.create({
-      id: uuidv4(),
-      email,
-      pin: hashedPin,
+    const hashedPassword = await bcrypt.hash('password123', 10);
+
+    const [admin, created] = await SuperAdmin.findOrCreate({
+      where: { email: 'superadmin@voyagemax.net' },
+      defaults: {
+        full_name: 'Super Admin',
+        password: hashedPassword,
+      },
     });
 
-    console.log('✅ SuperAdmin created with email:', email);
+    if (created) {
+      console.log('✅ SuperAdmin created with email: superadmin@voyagemax.net and password: password123');
+    } else {
+      console.log('ℹ️ SuperAdmin already exists.');
+    }
+
+    await sequelize.close();
   } catch (error) {
-    console.error('🚨 Error creating SuperAdmin:', error);
+    console.error('❌ Error creating SuperAdmin:', error);
   }
-}
+};
 
-createSuperAdmin();
-
+run();
+                                  

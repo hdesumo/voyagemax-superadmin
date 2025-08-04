@@ -4,8 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 import './index.css';
 
-// 🔐 Redirection automatique HTTP → HTTPS (production)
-if (window.location.protocol === 'http:') {
+// 🔐 Redirection automatique HTTP → HTTPS (en production uniquement)
+if (import.meta.env.PROD && window.location.protocol === 'http:') {
   window.location.href = window.location.href.replace('http:', 'https:');
 }
 
@@ -14,5 +14,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>e>
+  </React.StrictMode>
 );
