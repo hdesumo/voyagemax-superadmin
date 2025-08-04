@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
-const { SuperAdmin } = require('../models'); // adapte si le modèle est ailleurs
-const { sequelize } = require('../models');  // adapte si nécessaire
+const { SuperAdmin } = require('../models');
+const { sequelize } = require('../models');
 
 const run = async () => {
   try {
@@ -12,7 +12,7 @@ const run = async () => {
     const [admin, created] = await SuperAdmin.findOrCreate({
       where: { email: 'superadmin@voyagemax.net' },
       defaults: {
-        full_name: 'Super Admin',
+        fullname: 'Super Admin', // ✅ correction ici
         password: hashedPassword,
       },
     });
@@ -30,4 +30,4 @@ const run = async () => {
 };
 
 run();
-                                  
+
