@@ -15,10 +15,10 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/login/superadmin`,
+        `${import.meta.env.VITE_API_URL}/api/superadmin/login`,
         {
           email,
-          pin
+          password: pin
         }
       );
 
