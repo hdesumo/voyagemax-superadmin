@@ -12,7 +12,7 @@ const LoginSuperAdmin = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://api.voyagemax.net/api/auth/superadmin/login', {
+      const response = await axios.post('https://api.voyagemax.net/api/auth/login/superadmin', {
         email,
         password,
       });
