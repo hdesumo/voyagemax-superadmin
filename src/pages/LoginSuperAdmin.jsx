@@ -10,7 +10,6 @@ const LoginSuperAdmin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
 
     try {
       const response = await axios.post('https://api.voyagemax.net/api/auth/superadmin/login', {
@@ -18,29 +17,23 @@ const LoginSuperAdmin = () => {
         password,
       });
 
-      const { token, user } = response.data;
+      const { token } = response.data;
 
-      // Stocker le token et les infos utilisateur
+      // Sauvegarde du token dans le localStorage
       localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('role', 'superadmin');
 
-      // Rediriger vers le dashboard
+      // Redirection vers le dashboard
       navigate('/dashboard');
     } catch (err) {
-      console.error(err);
+      console.error('Login error:', err.response?.data || err.message);
       setError('Login failed. Please check your credentials.');
     }
   };
 
   return (
-    <div style={{
-      maxWidth: 400,
-      margin: '100px auto',
-      padding: 20,
-      border: '1px solid #ccc',
-      borderRadius: 8
-    }}>
-      <h2>Connexion SuperAdmin</h2>
+    <div style={{ maxWidth: 400, margin: '100px auto', padding: 20, border: '1px solid #ccc', borderRadius: 8 }}>
+      <h2>SuperAdmin Login</h2>
       <form onSubmit={handleLogin}>
         <label>Email:</label>
         <input
@@ -58,22 +51,8 @@ const LoginSuperAdmin = () => {
           required
           style={{ width: '100%', padding: 8, marginTop: 5 }}
         />
-        {error && <p style={{ color: 'red', marginTop: 10 }}>{error}</p>}
-        <button
-          type="submit"
-          style={{
-            marginTop: 20,
-            padding: 10,
-            width: '100%',
-            backgroundColor: '#007bff',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 5,
-            cursor: 'pointer'
-          }}
-        >
-          Se connecter
-        </button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button type="submit" style={{ marginTop: 20, width: '100%', padding: 10 }}>Login</button>
       </form>
     </div>
   );
