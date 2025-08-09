@@ -10,6 +10,7 @@ import PassengersPage from './pages/PassengersPage';
 import TripsPage from './pages/TripsPage';
 import BookingsPage from './pages/BookingsPage';
 import SuperAdminProfilePage from './pages/SuperAdminProfilePage';
+import SuperAdminNavbar from './components/SuperAdminNavbar';
 
 console.log("🚀 Composant LoginSuperAdmin affiché !");
 
@@ -26,7 +27,7 @@ function App() {
 
   return (
     <div className="flex h-screen">
-      {showSidebar && <Sidebar />}
+      {showSidebar && <SuperAdminNavbar />}
 
       <div className="flex-1 overflow-y-auto p-6 bg-gray-100">
         <Routes>

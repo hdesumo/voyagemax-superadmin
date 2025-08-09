@@ -1,21 +1,21 @@
-// src/api.js
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: import.meta.env.VITE_API_URL, // Ex: https://api.voyagemax.net/api
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true // ✅ Nécessaire pour gérer CORS + cookies si backend le supporte
 });
 
-// Ajoute un intercepteur pour envoyer le token si présent
+// Intercepteur pour ajouter le token Authorization si présent
 api.interceptors.request.use((config) => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  if (user?.token) {
-    config.headers.Authorization = `Bearer ${user.token}`;
+  const token = localStorage.getItem('superAdminToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-export default api;;
+export default api;
 

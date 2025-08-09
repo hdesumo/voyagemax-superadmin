@@ -12,16 +12,18 @@ const LoginSuperAdmin = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://api.voyagemax.net/api/auth/login/superadmin', {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        'https://api.voyagemax.net/api/auth/login/superadmin',
+        { email, password },
+        {
+          withCredentials: true // 🔴 Nécessaire pour CORS + cookies
+        }
+      );
 
       const { token } = response.data;
 
       // Sauvegarde du token dans le localStorage
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', 'superadmin');
+      localStorage.setItem('superAdminToken', token);
 
       // Redirection vers le dashboard
       navigate('/dashboard');
